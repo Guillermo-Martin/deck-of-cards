@@ -10,11 +10,9 @@ class Dealer extends Component {
     alt: ""
   }
 
+  // when page loads, send a request to https://deckofcardsapi.com/api/deck/new/shuffle
   async componentDidMount() {
-    console.log("inside componentDidMount")
-    // when page loads, send a request to https://deckofcardsapi.com/api/deck/new/shuffle
     let response = await axios.get("https://deckofcardsapi.com/api/deck/new/shuffle");
-    // console.log(response)
     // change remaining and deck id state to data i get back from the response
     this.setState({
       remaining: response.data.remaining,
@@ -28,23 +26,25 @@ class Dealer extends Component {
     if(this.state.remaining !== 0) {
       // make an api request to https://deckofcardsapi.com/api/deck/$%7Bdeck_id%7D/draw/
       axios
-      .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/`)
-      .then(response =>  {
-        // take the card image and change cardImg state
-        let newCard = response.data.cards[0].images.png;
-        let newRemaining = response.data.remaining;
-        let alt = response.data.cards[0].value + " of " + response.data.cards[0].suit
-        this.setState({
-          cardImg: newCard, 
-          remaining: newRemaining, 
-          alt: alt
+        .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/`)
+        .then(response =>  {
+          // take the card image and change cardImg state
+          // store card image, remaining cards, value, and suit to variables
+          let newCard = response.data.cards[0].images.png;
+          let newRemaining = response.data.remaining;
+          let alt = response.data.cards[0].value + " of " + response.data.cards[0].suit
+
+          // change state to new value
+          this.setState({
+            cardImg: newCard, 
+            remaining: newRemaining, 
+            alt: alt
+          });
         });
-      });
     } else {
       alert("There are no more cards in the deck!");
     }
   }
-
 
   render() {
     return (
