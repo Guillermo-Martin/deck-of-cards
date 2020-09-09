@@ -6,7 +6,8 @@ class Dealer extends Component {
   state  = {
     remaining: "",
     deckId: "",
-    cardImg: ""
+    cardImg: "",
+    alt: ""
   }
 
   async componentDidMount() {
@@ -32,7 +33,12 @@ class Dealer extends Component {
         // take the card image and change cardImg state
         let newCard = response.data.cards[0].images.png;
         let newRemaining = response.data.remaining;
-        this.setState({cardImg: newCard, remaining: newRemaining});
+        let alt = response.data.cards[0].value + " of " + response.data.cards[0].suit
+        this.setState({
+          cardImg: newCard, 
+          remaining: newRemaining, 
+          alt: alt
+        });
       });
     } else {
       alert("There are no more cards in the deck!");
@@ -44,21 +50,14 @@ class Dealer extends Component {
     return (
       <div>
         <button onClick={this.dealCard}>Deal a Card</button>
-        <Card src={this.state.cardImg}/>
-        <h1>{this.state.remaining}</h1>
+        <Card 
+          src={this.state.cardImg}
+          alt={this.state.alt}
+        />     
       </div>
     );
   }
 }
 
 export default Dealer;
-
-
-// request will go to componentDidMount();
-// store deck info in localStorage?
-// button will 
-// render card after making the request
-
-
-// will change remaining card number
 
