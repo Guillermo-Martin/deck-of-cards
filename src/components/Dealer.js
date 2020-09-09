@@ -23,16 +23,20 @@ class Dealer extends Component {
 
   // button function
   dealCard = () => {
-    // alert("connected!");
-    // make an api request to https://deckofcardsapi.com/api/deck/$%7Bdeck_id%7D/draw/
-    axios
+    // if this.state.remaining doesn't equal 0, deal a card; else alert no more cards
+    if(this.state.remaining !== 0) {
+      // make an api request to https://deckofcardsapi.com/api/deck/$%7Bdeck_id%7D/draw/
+      axios
       .get(`https://deckofcardsapi.com/api/deck/${this.state.deckId}/draw/`)
       .then(response =>  {
-        // console.log(response.data.cards[0].images.png, "line 32");
-        // take the card image, push it into an array (allCards state)
+        // take the card image and change cardImg state
         let newCard = response.data.cards[0].images.png;
-        this.setState({cardImg: newCard});
+        let newRemaining = response.data.remaining;
+        this.setState({cardImg: newCard, remaining: newRemaining});
       });
+    } else {
+      alert("There are no more cards in the deck!");
+    }
   }
 
 
@@ -41,6 +45,7 @@ class Dealer extends Component {
       <div>
         <button onClick={this.dealCard}>Deal a Card</button>
         <Card src={this.state.cardImg}/>
+        <h1>{this.state.remaining}</h1>
       </div>
     );
   }
