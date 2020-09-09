@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Card() {
+function Card(props) {
   return (
     <div>
-      <h2>This is a card</h2>
+      <img src={props.src} />
     </div>
   );
 }

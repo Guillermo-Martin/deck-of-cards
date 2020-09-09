@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Card from './Card';
 
 class Dealer extends Component {
   state  = {
     remaining: "",
     deckId: "",
-    allCards: []
+    cardImg: ""
   }
-
-  
 
   async componentDidMount() {
     console.log("inside componentDidMount")
@@ -32,9 +31,8 @@ class Dealer extends Component {
         // console.log(response.data.cards[0].images.png, "line 32");
         // take the card image, push it into an array (allCards state)
         let newCard = response.data.cards[0].images.png;
-        this.setState(state => (
-          {allCards: [...state.allCards, newCard]})
-        )});
+        this.setState({cardImg: newCard});
+      });
   }
 
 
@@ -42,7 +40,7 @@ class Dealer extends Component {
     return (
       <div>
         <button onClick={this.dealCard}>Deal a Card</button>
-        <h2>{this.state.allCards}</h2>
+        <Card src={this.state.cardImg}/>
       </div>
     );
   }
@@ -58,5 +56,4 @@ export default Dealer;
 
 
 // will change remaining card number
-// render an card component 
-// map over that array, and create a card component for every image in the array
+
